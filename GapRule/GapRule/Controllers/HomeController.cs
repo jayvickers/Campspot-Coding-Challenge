@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GapRule.Services;
-using GapRule.Content;
 using GapRule.Tests;
 using GapRule.Models;
 
@@ -33,7 +32,7 @@ namespace GapRule.Controllers
 
         private List<JsonTemplateResult> GetTestResults()
         {
-            JsonTemplate jsonFile = _gapRuleService.ParseJsonFileIntoObjects(Constants.ProvidedSampleFile);
+            JsonTemplate jsonFile = _gapRuleService.ParseJsonFileIntoObjects("test-case.json");
             List<Campsite> availableCampsites = _gapRuleService.FindAvailableCampsites(jsonFile);
 
             JsonTemplateResult results = new JsonTemplateResult
@@ -44,7 +43,7 @@ namespace GapRule.Controllers
                 ResultingCampsites = availableCampsites
             };
 
-            JsonTemplate jsonFileTestCase2 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase2);
+            JsonTemplate jsonFileTestCase2 = _gapRuleService.ParseJsonFileIntoObjects("test-case2.json");
             List<Campsite> availableCampsitesTestCase2 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase2);
 
             JsonTemplateResult resultsTestCase2 = new JsonTemplateResult
@@ -55,7 +54,7 @@ namespace GapRule.Controllers
                 ResultingCampsites = availableCampsitesTestCase2
             };
 
-            JsonTemplate jsonFileTestCase3 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase3);
+            JsonTemplate jsonFileTestCase3 = _gapRuleService.ParseJsonFileIntoObjects("test-case3.json");
             List<Campsite> availableCampsitesTestCase3 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase3);
 
             JsonTemplateResult resultsTestCase3 = new JsonTemplateResult
@@ -66,7 +65,7 @@ namespace GapRule.Controllers
                 ResultingCampsites = availableCampsitesTestCase3
             };
 
-            JsonTemplate jsonFileTestCase4 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase4);
+            JsonTemplate jsonFileTestCase4 = _gapRuleService.ParseJsonFileIntoObjects("test-case4.json");
             List<Campsite> availableCampsitesTestCase4 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase4);
 
             JsonTemplateResult resultsTestCase4 = new JsonTemplateResult
@@ -77,7 +76,7 @@ namespace GapRule.Controllers
                 ResultingCampsites = availableCampsitesTestCase4
             };
 
-            JsonTemplate jsonFileTestCase5 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase5);
+            JsonTemplate jsonFileTestCase5 = _gapRuleService.ParseJsonFileIntoObjects("test-case5.json");
             List<Campsite> availableCampsitesTestCase5 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase5);
 
             JsonTemplateResult resultsTestCase5 = new JsonTemplateResult

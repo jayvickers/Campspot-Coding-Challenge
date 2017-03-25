@@ -1,0 +1,40 @@
+{
+  "search": {
+    "startDate": "2016-06-07",
+    "endDate": "2016-06-10"
+  },
+  "campsites": [
+    {
+      "id": 1,
+      "name": "Platte river front"
+    },
+    {
+      "id": 2,
+      "name": "Van Down By The River"
+    },
+    {
+      "id": 3,
+      "name": "Walter Whites RV"
+    },
+    {
+      "id": 4,
+      "name": "REI Parking Lot"
+    }
+  ],
+   "gapRules": [
+     {
+       "gapSize": 2
+     },
+     {
+       "gapSize": 1
+     }
+  ],
+  "reservations": [
+    {"campsiteId": 1, "startDate": "2016-06-01", "endDate": "2016-06-05"}, 
+    {"campsiteId": 1, "startDate": "2016-06-06", "endDate": "2016-06-06"}, 
+    {"campsiteId": 1, "startDate": "2016-06-09", "endDate": "2016-06-10"}, 
+    {"campsiteId": 2, "startDate": "2016-06-11", "endDate": "2016-06-13"},  
+    {"campsiteId": 3, "startDate": "2016-06-01", "endDate": "2016-06-05"},  
+    {"campsiteId": 4, "startDate": "2016-06-01", "endDate": "2016-06-03"},
+  ]
+}  

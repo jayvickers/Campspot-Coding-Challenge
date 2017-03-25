@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using GapRule.Services;
-using GapRule.Content;
 using GapRule.Models;
 
 namespace GapRule.Tests
@@ -21,34 +20,34 @@ namespace GapRule.Tests
 
         public bool SingleCampsiteTestShouldBeTrue()
         {
-            var availableCampSites = ExecuteTestCase(Constants.TestCase2);
+            var availableCampSites = ExecuteTestCase("test-case2.json");
             return availableCampSites == 1;
         }
 
         public bool TwoCampsiteTestShouldBeFalse()
         {
-            var availableCampSites = ExecuteTestCase(Constants.TestCase3);
+            var availableCampSites = ExecuteTestCase("test-case3.json");
             return availableCampSites == 1;
         }
 
         public bool TwoCampsiteTestShouldBeTrue()
         {
-            var availableCampSites = ExecuteTestCase(Constants.TestCase3);
+            var availableCampSites = ExecuteTestCase("test-case3.json");
             return availableCampSites == 2;
         }
         public bool ThreeCampsiteTestShouldBeTrue()
         {
-            var availableCampSites = ExecuteTestCase(Constants.TestCase4);
+            var availableCampSites = ExecuteTestCase("test-case4.json");
             return availableCampSites == 3;
         }
         public bool ThreeCampsiteTestShouldBeFalse()
         {
-            var availableCampSites = ExecuteTestCase(Constants.TestCase4);
+            var availableCampSites = ExecuteTestCase("test-case4.json");
             return availableCampSites == 2;
         }
-        private int ExecuteTestCase(string jsonString)
+        private int ExecuteTestCase(string jsonName)
         {
-            JsonTemplate jsonFile = _service.ParseJsonFileIntoObjects(jsonString);
+            JsonTemplate jsonFile = _service.ParseJsonFileIntoObjects(jsonName);
             List<Campsite> availableCampsites = _service.FindAvailableCampsites(jsonFile);
             return availableCampsites.Count;
         }

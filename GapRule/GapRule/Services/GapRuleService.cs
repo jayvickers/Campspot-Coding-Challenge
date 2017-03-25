@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
-using GapRule.Content;
 using GapRule.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 
 namespace GapRule.Services
 {
@@ -19,20 +19,26 @@ namespace GapRule.Services
         }
 
         /// <summary>
-        /// Consume json file from constants.
+        /// Consume json file.
         /// </summary>
         /// <returns>Object modeled after json input files.</returns>
-        public JsonTemplate ParseJsonFileIntoObjects(string jsonFile)
+        public JsonTemplate ParseJsonFileIntoObjects(string jsonFileName)
         {
             try
             {
-                var result = JsonConvert.DeserializeObject<JsonTemplate>(jsonFile);
-                BuildCampsiteReservationList(result);
-                return result;
+                var path = HttpContext.Current.Server.MapPath(@"~/Content/" + jsonFileName);
+                using (StreamReader r = new StreamReader(path))
+                {
+                    string json = r.ReadToEnd();
+
+                    var result = JsonConvert.DeserializeObject<JsonTemplate>(json);
+                    BuildCampsiteReservationList(result);
+                    return result;
+                }
             }
             catch(Exception ex)
             {
-                throw new Exception("Improperly formatted json file" + ex.Message);
+                throw new Exception("Improperly formatted json file. | " + ex.Message);
             }           
         }
 
