@@ -92,6 +92,9 @@ namespace GapRule.Controllers
                 resultsTestCase5
             };            
         }
+        /// <summary>
+        /// Custom test cases to enforce business logic
+        /// </summary>
         private void ExecuteTestCases()
         {
             var test1 = _testService.SingleCampsiteTestShouldBeTrue();

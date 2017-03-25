@@ -5,6 +5,9 @@ using System.Web;
 
 namespace GapRule.Models
 {
+    /// <summary>
+    /// Existing reservation
+    /// </summary>
     public class Reservation
     {
         public int CampsiteId { get; set; }

@@ -1,5 +1,8 @@
 ﻿namespace GapRule.Content
 {
+    /// <summary>
+    /// Built to contain the Json files in string format
+    /// </summary>
     public static class Constants
     {
         public static readonly string ProvidedSampleFile = @"{

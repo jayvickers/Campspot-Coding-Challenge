@@ -5,6 +5,9 @@ using System.Web;
 
 namespace GapRule.Models
 {
+    /// <summary>
+    /// Input start and end date for a new reservation
+    /// </summary>
     public class Search
     {
         public DateTime StartDate { get; set; }

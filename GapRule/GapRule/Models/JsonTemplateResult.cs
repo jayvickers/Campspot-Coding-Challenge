@@ -6,6 +6,9 @@ using System.Web;
 
 namespace GapRule.Models
 {
+    /// <summary>
+    /// Helper class, designed to aid in displaying results
+    /// </summary>
     public class JsonTemplateResult
     {
         public JsonTemplate ExecutionTemplate { get; set; }

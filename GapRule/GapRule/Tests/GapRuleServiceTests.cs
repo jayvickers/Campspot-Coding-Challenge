@@ -8,6 +8,9 @@ using GapRule.Models;
 
 namespace GapRule.Tests
 {
+    /// <summary>
+    /// Custom test cases ensuring execution meets hard coded business logic results.
+    /// </summary>
     public class GapRuleServiceTests
     {
         private IGapRuleService _service { get; set; }

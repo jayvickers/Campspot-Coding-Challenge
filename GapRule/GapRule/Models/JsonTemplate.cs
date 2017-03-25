@@ -5,6 +5,9 @@ using System.Web;
 
 namespace GapRule.Models
 {
+    /// <summary>
+    /// Container for json file objects
+    /// </summary>
     public class JsonTemplate
     {
         public Search Search { get; set; }
