@@ -20,6 +20,10 @@ namespace GapRule.Controllers
             return View(IndexSetup());
         }
 
+        /// <summary>
+        /// Build view models to feed the Index view data.
+        /// </summary>
+        /// <returns>Populated view model.</returns>
         private JsonTemplateResultViewModel IndexSetup()
         {
             JsonTemplateResultViewModel allResults = new JsonTemplateResultViewModel();

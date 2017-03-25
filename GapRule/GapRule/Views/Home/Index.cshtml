@@ -15,7 +15,8 @@
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1>Gap Rule Solution</h1>           
+            <h1>Gap Rule Solution</h1>
+            <p>Select a test case to view results</p>           
         </div>
     </div>
     <div class="panel-group">
@@ -24,7 +25,7 @@
             {
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" href=@("#collapse" + @result.Id)>@result.TestCaseName <i class="glyphicon-plus"></i></a>                        
+                        <a data-toggle="collapse" href=@("#collapse" + @result.Id)>@result.TestCaseName</a>                        
                     </h4>
                 </div>
                 <div id=@("collapse"+ @result.Id) class="panel-collapse collapse">

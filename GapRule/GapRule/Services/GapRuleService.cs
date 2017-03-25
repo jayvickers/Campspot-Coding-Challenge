@@ -23,10 +23,17 @@ namespace GapRule.Services
         /// </summary>
         /// <returns>Object modeled after json input files.</returns>
         public JsonTemplate ParseJsonFileIntoObjects(string jsonFile)
-        {           
-            var result = JsonConvert.DeserializeObject<JsonTemplate>(jsonFile);
-            BuildCampsiteReservationList(result);           
-            return result;
+        {
+            try
+            {
+                var result = JsonConvert.DeserializeObject<JsonTemplate>(jsonFile);
+                BuildCampsiteReservationList(result);
+                return result;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Improperly formatted json file" + ex.Message);
+            }           
         }
 
         /// <summary>
