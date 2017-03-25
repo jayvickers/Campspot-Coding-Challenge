@@ -13,7 +13,7 @@ namespace GapRule.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            _service.ParseJsonFile();
+            _service.ParseJsonFileIntoObjects();
             return View();
         }
     }

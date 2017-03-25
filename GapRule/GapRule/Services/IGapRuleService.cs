@@ -15,6 +15,10 @@ namespace GapRule.Services
 {
     public interface IGapRuleService
     {
-        JsonTemplate ParseJsonFile();
+        JsonTemplate ParseJsonFileIntoObjects();
+        List<Campsite> FindAvailableCampsites(JsonTemplate inputJson);
+        bool CompareCampsiteReservations(JsonTemplate inputJson, Campsite tmpCampSite);
+        bool CompareInputRangeToReservationForEachGap(JsonTemplate inputJson, Reservation existingReservation);
+        bool BaseCaseCompareInputRangeToReservation(Search inputSearch, Reservation existingReservation, Models.GapRule gapRule);
     }
 }

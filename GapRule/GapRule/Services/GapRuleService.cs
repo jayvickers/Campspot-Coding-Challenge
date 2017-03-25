@@ -22,56 +22,65 @@ namespace GapRule.Services
         /// Consume json file from constants.
         /// </summary>
         /// <returns>Object modeled after json input files.</returns>
-        public JsonTemplate ParseJsonFile()
+        public JsonTemplate ParseJsonFileIntoObjects()
         {
             var jsonFile = Constants.TestCase1;
             var result = JsonConvert.DeserializeObject<JsonTemplate>(jsonFile);
-            result.Reservations = result.Reservations.OrderBy(x => x.CampsiteId).ToList();
+            BuildCampsiteReservationList(result);
+            FindAvailableCampsites(result);
             return result;
         }
 
-        public int Test(JsonTemplate inputJson)
+        /// <summary>
+        /// Iterate through campsites, if all base comparisons return true then campsite is valid for new reservation.
+        /// </summary>
+        /// <param name="inputJson">Input test object.</param>
+        /// <returns>List of campsites that can host the new reservation without violating a gap rule.</returns>
+        public List<Campsite> FindAvailableCampsites(JsonTemplate inputJson)
         {
-            foreach (var res in inputJson.Reservations)
+            List<Campsite> availableCampsites = new List<Campsite>();
+            foreach (Campsite tmpCampSite in inputJson.Campsites)
             {
-                if (res.EndDate )
+                if (CompareCampsiteReservations(inputJson, tmpCampSite))
                 {
-                    
+                    availableCampsites.Add(tmpCampSite);
                 }
             }
-            return 0;
+            return availableCampsites;
         }
-        //TODO: make the reservations specific to each campsite, run the method below for the list of reservations on each campsite. if you get TRUEs back then add that campsite to return list.
+
         /// <summary>
-        /// 
+        /// Iterate through each existing reservation and feed to base case comparison methods.
+        /// If the new reservation will not fit with one existing reservation, returns false.
         /// </summary>
-        /// <param name="inputSearch"></param>
-        /// <param name="existingReservation"></param>
-        /// <param name="gapRules"></param>
-        /// <returns></returns>
-        public bool BaseCaseForEachGap(Search inputSearch, List<Reservation> existingReservation, List<Models.GapRule> gapRules)
+        /// <param name="inputJson">Input test object.</param>
+        /// <param name="tmpCampSite">The current campsite we are trying to insert the new reservation into.</param>        
+        /// <returns>bool indicating if a new reservation will fit between all existing reservation for all given gap rules.</returns>        
+        public bool CompareCampsiteReservations(JsonTemplate inputJson, Campsite tmpCampSite)
         {
             var canFit = true;
-            foreach (var res in existingReservation)
+            foreach (var res in tmpCampSite.CampsiteReservationList)
             {
-                canFit = BaseCaseForEachGap(inputSearch, res, gapRules) && canFit;
+                canFit = CompareInputRangeToReservationForEachGap(inputJson, res) && canFit;
             }
             return canFit;
         }
 
         /// <summary>
-        /// 
+        /// Execute the base case comparison for each provided gap rule.
+        /// Use && because the new reservation must fit for all provided gap rules.
+        /// If it fails for one gap rule, logical operator will return false for the entire set of gap rules.
         /// </summary>
-        /// <param name="inputSearch"></param>
-        /// <param name="existingReservation"></param>
-        /// <param name="gapRules"></param>
-        /// <returns></returns>
-        public bool BaseCaseForEachGap(Search inputSearch, Reservation existingReservation, List<Models.GapRule> gapRules)
+        /// <param name="inputSearch">The potential new reservation date range.</param>
+        /// <param name="existingReservation">The reservation we are comparing the input date range against.</param>
+        /// <param name="gapRules">List of all provided gap rules.</param>
+        /// <returns>bool indicating if a new reservation will fit before or after a single existing reservation for all given gap rules.</returns>
+        public bool CompareInputRangeToReservationForEachGap(JsonTemplate inputJson, Reservation existingReservation)
         {
             var canFit = true;
-            foreach (var gap in gapRules)
+            foreach (var gap in inputJson.GapRules)
             {
-                canFit = BaseCase(inputSearch, existingReservation, gap) && canFit;
+                canFit = BaseCaseCompareInputRangeToReservation(inputJson.Search, existingReservation, gap) && canFit;
             }
             return canFit;
         }
@@ -80,21 +89,44 @@ namespace GapRule.Services
         /// This is the most granular comparison. Checks to see
         /// if an input date range will violate a single gap rule for a single reservation.
         /// </summary>
-        /// <param name="inputSearch">The potential reservation date range.</param>
+        /// <param name="inputSearch">The potential new reservation date range.</param>
         /// <param name="existingReservation">The reservation we are comparing the input date range against.</param>
         /// <param name="gapRule">current gap rule.</param>
-        /// <returns></returns>
-        public bool BaseCase(Search inputSearch, Reservation existingReservation, Models.GapRule gapRule )
+        /// <returns>bool indicating if a new reservation will fit before or after a single existing reservation for a single gap rule.</returns>
+        public bool BaseCaseCompareInputRangeToReservation(Search inputSearch, Reservation existingReservation, Models.GapRule gapRule )
         {
-            if (inputSearch.StartDate > existingReservation.EndDate && (inputSearch.StartDate - existingReservation.EndDate).TotalDays < gapRule.GapSize)
+            //have to subract 1 from the difference because a reservation includes the end and start dates. not a mathematical difference.
+            if (inputSearch.StartDate > existingReservation.EndDate && (inputSearch.StartDate - existingReservation.EndDate).TotalDays - 1 != gapRule.GapSize)
             {
                 return true;
             }
-            if (inputSearch.EndDate < existingReservation.StartDate && (existingReservation.EndDate - inputSearch.EndDate).TotalDays < gapRule.GapSize)
+            if (inputSearch.EndDate < existingReservation.StartDate && (existingReservation.StartDate - inputSearch.EndDate).TotalDays - 1 != gapRule.GapSize)
             {
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Add a list of reservations to each campsite.
+        /// This makes it easier to keep track of campsites when traversing through reservations.
+        /// </summary>
+        /// <param name="inputJson">input test object.</param>
+        private void BuildCampsiteReservationList(JsonTemplate inputJson)
+        {
+            foreach (var res in inputJson.Reservations)
+            {
+                try
+                {
+                    Campsite tmpCampSite = inputJson.Campsites.Where(x => x.Id == res.CampsiteId).First();
+                    tmpCampSite.CampsiteReservationList.Add(res);
+                }
+                catch (Exception ex)
+                {
+                    //couldn't find that campsite ID in our list of campsites
+                    throw new Exception("Invalid Campsite ID provided with reservation. " + ex.Message);
+                }
+            }
         }
     }
 }
