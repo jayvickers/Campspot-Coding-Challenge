@@ -22,12 +22,10 @@ namespace GapRule.Services
         /// Consume json file from constants.
         /// </summary>
         /// <returns>Object modeled after json input files.</returns>
-        public JsonTemplate ParseJsonFileIntoObjects()
-        {
-            var jsonFile = Constants.TestCase1;
+        public JsonTemplate ParseJsonFileIntoObjects(string jsonFile)
+        {           
             var result = JsonConvert.DeserializeObject<JsonTemplate>(jsonFile);
-            BuildCampsiteReservationList(result);
-            FindAvailableCampsites(result);
+            BuildCampsiteReservationList(result);           
             return result;
         }
 

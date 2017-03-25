@@ -4,17 +4,101 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GapRule.Services;
+using GapRule.Content;
+using GapRule.Tests;
+using GapRule.Models;
 
 namespace GapRule.Controllers
 {
     public class HomeController : Controller
     {
-        IGapRuleService _service = new GapRuleService();
+        IGapRuleService _gapRuleService = new GapRuleService();
+        GapRuleServiceTests _testService = new GapRuleServiceTests();
         // GET: Home
         public ActionResult Index()
+        {           
+            return View(IndexSetup());
+        }
+
+        private JsonTemplateResultViewModel IndexSetup()
         {
-            _service.ParseJsonFileIntoObjects();
-            return View();
+            JsonTemplateResultViewModel allResults = new JsonTemplateResultViewModel();
+            allResults.Results = GetTestResults();
+            return allResults;
+        }
+
+        private List<JsonTemplateResult> GetTestResults()
+        {
+            JsonTemplate jsonFile = _gapRuleService.ParseJsonFileIntoObjects(Constants.ProvidedSampleFile);
+            List<Campsite> availableCampsites = _gapRuleService.FindAvailableCampsites(jsonFile);
+
+            JsonTemplateResult results = new JsonTemplateResult
+            {
+                ExecutionTemplate = jsonFile,
+                TestCaseName = "Provided Test Case",
+                Id = 1,
+                ResultingCampsites = availableCampsites
+            };
+
+            JsonTemplate jsonFileTestCase2 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase2);
+            List<Campsite> availableCampsitesTestCase2 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase2);
+
+            JsonTemplateResult resultsTestCase2 = new JsonTemplateResult
+            {
+                ExecutionTemplate = jsonFileTestCase2,
+                TestCaseName = "Custom Test Case 2",
+                Id = 2,
+                ResultingCampsites = availableCampsitesTestCase2
+            };
+
+            JsonTemplate jsonFileTestCase3 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase3);
+            List<Campsite> availableCampsitesTestCase3 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase3);
+
+            JsonTemplateResult resultsTestCase3 = new JsonTemplateResult
+            {
+                ExecutionTemplate = jsonFileTestCase3,
+                TestCaseName = "Custom Test Case 3",
+                Id = 3,
+                ResultingCampsites = availableCampsitesTestCase3
+            };
+
+            JsonTemplate jsonFileTestCase4 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase4);
+            List<Campsite> availableCampsitesTestCase4 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase4);
+
+            JsonTemplateResult resultsTestCase4 = new JsonTemplateResult
+            {
+                ExecutionTemplate = jsonFileTestCase4,
+                TestCaseName = "Custom Test Case 4",
+                Id = 4,
+                ResultingCampsites = availableCampsitesTestCase4
+            };
+
+            JsonTemplate jsonFileTestCase5 = _gapRuleService.ParseJsonFileIntoObjects(Constants.TestCase5);
+            List<Campsite> availableCampsitesTestCase5 = _gapRuleService.FindAvailableCampsites(jsonFileTestCase5);
+
+            JsonTemplateResult resultsTestCase5 = new JsonTemplateResult
+            {
+                ExecutionTemplate = jsonFileTestCase5,
+                TestCaseName = "Custom Test Case 5",
+                Id = 5,
+                ResultingCampsites = availableCampsitesTestCase5
+            };
+
+            return new List<JsonTemplateResult> {
+                results,
+                resultsTestCase2,
+                resultsTestCase3,
+                resultsTestCase4,
+                resultsTestCase5
+            };            
+        }
+        private void ExecuteTestCases()
+        {
+            var test1 = _testService.SingleCampsiteTestShouldBeTrue();
+            var test2 = _testService.TwoCampsiteTestShouldBeFalse();
+            var test3 = _testService.TwoCampsiteTestShouldBeTrue();
+            var test4 = _testService.ThreeCampsiteTestShouldBeTrue();
+            var test5 = _testService.ThreeCampsiteTestShouldBeFalse();
         }
     }
 }
