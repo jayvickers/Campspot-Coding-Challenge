@@ -41,17 +41,22 @@
         <div class="row">
             @if (@Model.ResultingCampsites.Count == 0)
             {
-                <p style="font-weight:bold">Test not executed</p>
+                <div class="alert-warning">
+                    <h2> Test Not Executed - Click Execute Tests Button</h2>
+                    @* <p style="font-weight:bold">Test not executed</p>*@
+                </div>
             }
             else
             {
-                <p style="font-weight:bold">Available Campsites:</p>
-                foreach (var site in @Model.ResultingCampsites)
-                {
-                    <div class="padded-row">
+                <div class="alert-success">
+                    <h2> Test Results</h2>
+                    @foreach (var site in @Model.ResultingCampsites)
+                    {
+                    <div class="padded-row alert-success">
                         @site.Name
                     </div>
-                }
+                    }
+                </div>
             }
         </div>
     </div>
