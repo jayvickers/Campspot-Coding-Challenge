@@ -2,6 +2,11 @@
 @using System.Web.Optimization
 <html>
 <head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/bundles/css")
+    @Styles.Render("~/bundles/fonts")
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My Gap Rule Solution</title>
@@ -13,10 +18,6 @@
     <div class="container body-content">
         @RenderBody()
         <hr />        
-    </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Styles.Render("~/bundles/css")  
-    @Styles.Render("~/bundles/fonts")      
+    </div>      
 </body>
 </html>

@@ -1,0 +1,58 @@
+﻿@model GapRule.Models.JsonTemplateResult
+@{
+    ViewBag.Title = "_TestCaseResultPartial";
+}
+
+
+<div class="panel-heading">
+    <h4 class="panel-title">
+        <a data-toggle="collapse" href=@("#collapse" + @Model.Id)>@Model.TestCaseName</a>
+    </h4>
+</div>
+<div id=@("collapse"+ @Model.Id) class="panel-collapse collapse">
+    <div class="panel-body">
+        <div class="row">
+            <p>Input Reservation Date Range: @Model.ExecutionTemplate.Search.StartDate.ToShortDateString() - @Model.ExecutionTemplate.Search.EndDate.ToShortDateString()</p>
+        </div>
+        <div class="row">
+            <p>Input Campsites and Reservations:</p>
+        </div>
+        @foreach (var site in @Model.ExecutionTemplate.Campsites)
+            {
+            <div class="padded-row">
+                @site.Name
+                @foreach (var res in @site.CampsiteReservationList)
+                {
+                    <div class="padded-row">
+                        @res.StartDate.ToShortDateString() - @res.EndDate.ToShortDateString()
+                    </div>
+                }
+            </div>
+        }
+        <div class="row">
+            <p>Gap Rules:</p>
+            @foreach (var rule in @Model.ExecutionTemplate.GapRules)
+            {
+                <div class="padded-row">
+                    @rule.GapSize
+                </div>
+            }
+        </div>
+        <div class="row">
+            @if (@Model.ResultingCampsites.Count == 0)
+            {
+                <p style="font-weight:bold">Test not executed</p>
+            }
+            else
+            {
+                <p style="font-weight:bold">Available Campsites:</p>
+                foreach (var site in @Model.ResultingCampsites)
+                {
+                    <div class="padded-row">
+                        @site.Name
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

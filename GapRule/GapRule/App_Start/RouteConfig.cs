@@ -18,6 +18,11 @@ namespace GapRule
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+            "GetTestResultsRoute",
+            "GetTestResults",
+            new { controller = "Home", action = "GetTestResults" }
+        );
         }
     }
 }
